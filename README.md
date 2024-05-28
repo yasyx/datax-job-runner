@@ -19,24 +19,24 @@ Now we can only support sync jobs of  `MySQL to MySQL`, it works like below
   2. make ansible playbook file `mysql-to-mysql.yaml`
   ```
   - hosts: localhost
-  gather_facts: false
-  vars:
-    source: mysql
-    reader_mysql_host: `your reader mysql host`
-    reader_mysql_port: `your reader mysql port`
-    reader_mysql_user: `your reader mysql user`
-    reader_mysql_pass: `your reader mysql password`
-    reader_mysql_db: `your reader mysql database name`
-    writer_mysql_host: `your writer mysql host`
-    writer_mysql_port: `your writer mysql port`
-    writer_mysql_user: `your writer mysql user`
-    writer_mysql_pass: `your writer mysql password`
-    writer_mysql_db: `your writer mysql database name`
-    exclude_tables: []
-  roles:
-    - common
-    - mysql
-    - datax
+    gather_facts: false
+    vars:
+      source: mysql
+      reader_mysql_host: `your reader mysql host`
+      reader_mysql_port: `your reader mysql port`
+      reader_mysql_user: `your reader mysql user`
+      reader_mysql_pass: `your reader mysql password`
+      reader_mysql_db: `your reader mysql database name`
+      writer_mysql_host: `your writer mysql host`
+      writer_mysql_port: `your writer mysql port`
+      writer_mysql_user: `your writer mysql user`
+      writer_mysql_pass: `your writer mysql password`
+      writer_mysql_db: `your writer mysql database name`
+      exclude_tables: []
+    roles:
+      - common
+      - mysql
+      - datax
   ```
   3. `sudo docker run -it --rm -v"./runner:/datax-job-runner/runner" -v "./mysql-to-mysql.yaml:/datax-job-runner/mysql-to-mysql.yaml" yasyx/datax-job-runner:v1.0.0 ansible-playbook mysql-to-mysql.yaml`
   4. ansible logs
