@@ -1,23 +1,52 @@
-About 
-
-This project can generate and run jobs of [Alibaba DataX](https://github.com/alibaba/DataX).
-
-It was written by ansible playbook.
+#### About 
+This project can generate and run jobs of [Alibaba DataX](https://github.com/alibaba/DataX),It was written by ansible playbook.
 
 Now we can only support sync jobs of  `MySQL to MySQL`, it works like below
-
  - Dump database struct of MySQL reader
  - Create writer database struct by dump file
  - Register tables of database to Ansible playbook
  - Generate reader.json、writer.json、job.json
  - Run jobs by alibaba DataX to sync data from one to another
 
-Features
+#### Features
  - Docker
  - 仅需简单配置即可全量同步mysql数据库，无需手动撰写job
  - 支持并发执行job
 
-Parameters
+#### Quickstart
+- Docker quickstart
+  1. docker pull yasyx/datax-job-runner:v1.0.0
+  2. make ansible playbook file `mysql-to-mysql.yaml`
+  ```
+  - hosts: localhost
+  gather_facts: false
+  vars:
+    source: mysql
+    reader_mysql_host: `your reader mysql host`
+    reader_mysql_port: `your reader mysql port`
+    reader_mysql_user: `your reader mysql user`
+    reader_mysql_pass: `your reader mysql password`
+    reader_mysql_db: `your reader mysql database name`
+    writer_mysql_host: `your writer mysql host`
+    writer_mysql_port: `your writer mysql port`
+    writer_mysql_user: `your writer mysql user`
+    writer_mysql_pass: `your writer mysql password`
+    writer_mysql_db: `your writer mysql database name`
+    exclude_tables: []
+  roles:
+    - common
+    - mysql
+    - datax
+  ```
+  3. `sudo docker run -it --rm -v"./runner:/datax-job-runner/runner" -v "./mysql-to-mysql.yaml:/datax-job-runner/mysql-to-mysql.yaml" yasyx/datax-job-runner:v1.0.0 ansible-playbook mysql-to-mysql.yaml`
+  4. ansible logs
+     ![image](https://github.com/yasyx/datax-job-runner/assets/12021357/431381b6-e320-47ca-8a91-25fd62805e3f)
+
+  5. DataX logs `cat runner/logs/mysql/test-jobs.log`
+     ![image](https://github.com/yasyx/datax-job-runner/assets/12021357/808d12fd-a730-476e-bb2c-99266a147af3)
+
+
+#### Parameters
  ```
  - hosts: localhost
   gather_facts: false
