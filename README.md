@@ -7,10 +7,10 @@ It was written by ansible playbook.
 Now we can only support sync jobs of  `MySQL to MySQL`, it works like below
 
  - Dump database struct of MySQL reader
- - Create database struct by dump file
+ - Create writer database struct by dump file
  - Register tables of database to Ansible playbook
  - Generate reader.json、writer.json、job.json
- - Run jobs by alibaba datax
+ - Run jobs by alibaba datax to sync data from one to another
 
 Features
  - Docker
