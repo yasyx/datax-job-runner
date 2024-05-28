@@ -1,5 +1,5 @@
 #### About 
-This project can generate and run jobs of [Alibaba DataX](https://github.com/alibaba/DataX),It was written by ansible playbook.
+This project can generate and run jobs of [Alibaba DataX 3.0](https://github.com/alibaba/DataX),It was written by ansible playbook.
 
 Now we can only support sync jobs of  `MySQL to MySQL`, it works like below
  - Dump database struct of MySQL reader
