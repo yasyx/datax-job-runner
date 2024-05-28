@@ -38,7 +38,7 @@ Now we can only support sync jobs of  `MySQL to MySQL`, it works like below
       - mysql
       - datax
   ```
-  3. `sudo docker run -it --rm -v"./runner:/datax-job-runner/runner" -v "./mysql-to-mysql.yaml:/datax-job-runner/mysql-to-mysql.yaml" yasyx/datax-job-runner:v1.0.0 ansible-playbook mysql-to-mysql.yaml`
+  3. `sudo docker run -it --rm -v "./runner:/datax-job-runner/runner" -v "./mysql-to-mysql.yaml:/datax-job-runner/mysql-to-mysql.yaml" yasyx/datax-job-runner:v1.0.0 ansible-playbook mysql-to-mysql.yaml`
   4. ansible logs
      ![image](https://github.com/yasyx/datax-job-runner/assets/12021357/431381b6-e320-47ca-8a91-25fd62805e3f)
 
