@@ -1,8 +1,9 @@
 FROM ubuntu:22.04
 
-RUN sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list &&\
-    sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list &&\
-    mkdir -p /datax-job-runner &&\
+#sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list &&\
+#sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list &&\
+
+RUN mkdir -p /datax-job-runner &&\
     apt-get update &&\
     apt install ansible -y -q &&\
     apt install openjdk-8-jdk mysql-client vim pip -y -q &&\
