@@ -49,38 +49,35 @@ Now we can only support sync jobs of  `MySQL to MySQL`, it works like below
 #### Parameters
  ```
  - hosts: localhost
-  gather_facts: false
-  vars:
-    source: mysql
-    table_register_sql: SELECT TABLE_NAME, CONCAT( 'SELECT * FROM ', TABLE_NAME, ' WHERE company_id = 108911;' ) `SQL`, ( SELECT CONCAT( '"`', GROUP_CONCAT( COLUMN_NAME ORDER BY ORDINAL_POSITION ASC SEPARATOR '`","`' ), '`"' ) FROM information_schema.COLUMNS c WHERE c.TABLE_SCHEMA = '{{writer_mysql_db}}' AND c.TABLE_NAME = t1.TABLE_NAME ) `COLUMNS` FROM information_schema.TABLES t1 WHERE t1.TABLE_SCHEMA = '{{writer_mysql_db}}' AND t1.TABLE_NAME IN ( SELECT TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '{{writer_mysql_db}}' AND COLUMN_NAME = 'company_id' ) UNION ALL SELECT TABLE_NAME, CONCAT( 'SELECT * FROM ', TABLE_NAME, ';' ) `SQL`, ( SELECT CONCAT( '"`', GROUP_CONCAT( COLUMN_NAME ORDER BY ORDINAL_POSITION ASC SEPARATOR '`","`' ), '`"' ) FROM information_schema.COLUMNS c WHERE c.TABLE_SCHEMA = '{{writer_mysql_db}}' AND c.TABLE_NAME = t2.TABLE_NAME ) `COLUMNS` FROM information_schema.TABLES t2 WHERE t2.TABLE_SCHEMA = '{{writer_mysql_db}}' AND t2.TABLE_NAME NOT IN ( SELECT TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '{{writer_mysql_db}}' AND COLUMN_NAME = 'company_id' );
-    reader_mysql_host: 127.0.0.1
-    reader_mysql_port: 3306
-    reader_mysql_user: root
-    reader_mysql_pass: myrootpass
-    reader_mysql_db: test_db1
-    writer_mysql_host: 127.0.0.1
-    writer_mysql_port: 3306
-    writer_mysql_user: root
-    writer_mysql_pass: myrootpass
-    writer_mysql_db: test_db1
-    exclude_tables:
-      - replies
-      - attachments
-      - taggings
-      - ticket_follows
-      - customer_stats
-      - customer_feeds
-      - alterations
-  roles:
-    - common
-    - mysql
-    - datax
+   gather_facts: false
+   vars:
+     source: mysql
+     table_register_sql: SELECT TABLE_NAME, CONCAT( 'SELECT * FROM ', TABLE_NAME, ' WHERE company_id = 108911;' ) `SQL`, ( SELECT CONCAT( '"`', GROUP_CONCAT( COLUMN_NAME ORDER BY ORDINAL_POSITION ASC SEPARATOR '`","`' ), '`"' ) FROM information_schema.COLUMNS c WHERE c.TABLE_SCHEMA = '{{writer_mysql_db}}' AND c.TABLE_NAME = t1.TABLE_NAME ) `COLUMNS` FROM information_schema.TABLES t1 WHERE t1.TABLE_SCHEMA = '{{writer_mysql_db}}' AND t1.TABLE_NAME IN ( SELECT TABLE_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = '{{writer_mysql_db}}' AND COLUMN_NAME = 'company_id' );
+     reader_mysql_host: 127.0.0.1
+     reader_mysql_port: 3306
+     reader_mysql_user: root
+     reader_mysql_pass: myrootpass
+     reader_mysql_db: test_db1
+     writer_mysql_host: 127.0.0.1
+     writer_mysql_port: 3306
+     writer_mysql_user: root
+     writer_mysql_pass: myrootpass
+     writer_mysql_db: test_db1
+     exclude_tables:
+       - replies
+       - attachments
+   roles:
+     - common
+     - mysql
+     - datax
  ```
  - source 数据源 
  - table_register_sql: 获取数据库中所有的表， 默认值为：
     ```
-    SELECT TABLE_NAME, 
-           ( SELECT CONCAT( '"`', GROUP_CONCAT( COLUMN_NAME ORDER BY ORDINAL_POSITION ASC SEPARATOR '`","`' ), '`"' ) FROM information_schema.COLUMNS c WHERE c.TABLE_SCHEMA = '{{writer_mysql_db}}' AND c.TABLE_NAME = t1.TABLE_NAME ) `COLUMNS` 
-    FROM information_schema.TABLES t1 WHERE t1.TABLE_SCHEMA = '{{writer_mysql_db}}';   
+    SELECT TABLE_NAME,
+           CONCAT( 'SELECT * FROM ', TABLE_NAME, ';' ) `SQL`,
+           ( SELECT CONCAT( '"`', GROUP_CONCAT( COLUMN_NAME ORDER BY ORDINAL_POSITION ASC SEPARATOR '`","`' ), '`"' ) FROM information_schema.COLUMNS c WHERE c.TABLE_SCHEMA = '{{writer_mysql_db}}' AND c.TABLE_NAME = t1.TABLE_NAME ) `COLUMNS`
+    FROM information_schema.TABLES t1 WHERE t1.TABLE_SCHEMA = '{{writer_mysql_db}}';
     ```
- - exclude_tables: 排除表  
+    注册表的sql中必须包含 TABLE_NAME  SQL  COLUMNS  三个字段，后续会优化此行为。
+ - exclude_tables: 排除表，此表会在同步过程中被忽略，例如一些超级大表暂时不同步  
