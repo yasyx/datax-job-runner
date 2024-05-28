@@ -1,0 +1,22 @@
+runner_dir: runner
+
+# job的存放目录
+jobs_dir: "{{runner_dir}}/jobs"
+jobs_with_source_dir: "{{runner_dir}}/jobs/{{source}}"
+
+# 日志存放目录
+logs_dir: "{{runner_dir}}/logs"
+logs_with_source_dir: "{{runner_dir}}/logs/{{source}}"
+
+# 执行job脚本的存放目录
+scripts_dir: "{{runner_dir}}/scripts"
+scripts_with_source_dir: "{{runner_dir}}/scripts/{{source}}"
+
+# reader.json writer.json的文件存放目录
+reader_dir: "{{runner_dir}}/reader"
+reader_with_source_dir: "{{runner_dir}}/reader/{{source}}"
+writer_dir: "{{runner_dir}}/writer"
+writer_with_source_dir: "{{runner_dir}}/writer/{{source}}"
+
+# datax 可执行文件目录
+datax_bin: "datax/bin"

@@ -1,0 +1,10 @@
+- hosts: localhost
+  gather_facts: false
+  vars:
+    my_dict_list:
+      - { name: "Hello", value: 1 }
+      - { name: "World", value: 2 }
+  tasks:
+    - name: Concatenate items without separator
+      ansible.builtin.debug:
+        msg: "arr=( {{ my_dict_list | map(attribute='value') | map('quote') | join(' ') }})"

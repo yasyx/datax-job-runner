@@ -1,0 +1,7 @@
+- name: jobs connect reader and writer for {{table.TABLE_NAME}}
+  include_tasks: connect-reader-writer.yaml
+  with_items: "{{table_query_results.query_result[0]}}"
+  loop_control:
+    loop_var: table
+  tags:
+    - create-jobs

@@ -1,0 +1,10 @@
+
+- name: mysql writer
+  template:
+    dest: "{{writer_with_source_dir}}/{{table.TABLE_NAME}}-writer.json"
+    src: writer-template.json.j2
+  with_items: "{{table_query_results.query_result[0]}}"
+  loop_control:
+    loop_var: table
+  tags:
+    - create-jobs

@@ -1,0 +1,19 @@
+
+- name: get reader config
+  shell: cat {{reader_with_source_dir}}/{{table.TABLE_NAME}}-reader.json
+  register: reader_conf
+  tags:
+    - create-jobs
+
+- name: get writer config
+  shell: cat {{writer_with_source_dir}}/{{table.TABLE_NAME}}-writer.json
+  register: writer_conf
+  tags:
+    - create-jobs
+
+- name: jobs connect reader and writer for {{table.TABLE_NAME}}
+  template:
+    dest: "{{jobs_with_source_dir}}/{{table.TABLE_NAME}}-jobs.json"
+    src: job-template.json.j2
+  tags:
+    - create-jobs

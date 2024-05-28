@@ -1,0 +1,49 @@
+#!/bin/bash
+
+MAX_CONCURRENT_TASKS=5
+JOBS_DIR="{{ jobs_with_source_dir }}"
+LOGS_DIR="{{logs_with_source_dir}}"
+DATAX_BIN="{{datax_bin}}"
+
+{% for task in task_result.msg %}
+{% if task not in exclude_tables %}
+tasks+=("{{ task }}")
+{% endif %}
+{% endfor %}
+
+declare -a pids
+
+cleanup_pids() {
+    running_pids=()
+    for pid in "${pids[@]}"; do
+        if kill -0 "$pid" > /dev/null 2>&1; then
+            running_pids+=("$pid")
+        fi
+    done
+    pids=("${running_pids[@]}")
+}
+
+start_task() {
+    local task="$1"
+    echo "Executing task: $task"
+    nohup python3 ${DATAX_BIN}/datax.py "${JOBS_DIR}/${task}-jobs.json" > "${LOGS_DIR}/${task}-jobs.log" 2>&1 &
+    local pid=$!
+    echo "Started task with PID: $pid"
+    pids+=("$pid")
+}
+{% raw %}
+
+for task in "${tasks[@]}"; do
+    start_task "$task"
+    sleep 1
+    while [ "${#pids[@]}" -ge "$MAX_CONCURRENT_TASKS" ]; do
+        echo "已达到最大并发任务数，等待一个任务完成。"
+        wait -n
+        cleanup_pids
+    done
+done
+
+wait
+
+echo "所有任务完成。"
+{% endraw %}

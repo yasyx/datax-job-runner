@@ -1,0 +1,1 @@
+default_table_register_sql: SELECT TABLE_NAME, ( SELECT CONCAT( '"`', GROUP_CONCAT( COLUMN_NAME ORDER BY ORDINAL_POSITION ASC SEPARATOR '`","`' ), '`"' ) FROM information_schema.COLUMNS c WHERE c.TABLE_SCHEMA = '{{writer_mysql_db}}' AND c.TABLE_NAME = t1.TABLE_NAME ) `COLUMNS` FROM information_schema.TABLES t1 WHERE t1.TABLE_SCHEMA = '{{writer_mysql_db}}';

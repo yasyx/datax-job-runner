@@ -1,0 +1,5 @@
+dependencies:
+  - role: mysql/common
+  - role: mysql/reader
+  - role: mysql/writer
+  - role: job

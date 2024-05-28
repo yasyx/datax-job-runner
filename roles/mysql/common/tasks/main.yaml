@@ -1,0 +1,28 @@
+- name: Dump reader database struct
+  shell:  "mysqldump -h{{reader_mysql_host}} -u{{reader_mysql_user}} -p{{reader_mysql_pass}} -P{{reader_mysql_port}}  -d {{reader_mysql_db}} --set-gtid-purged=off > {{scripts_with_source_dir}}/{{reader_mysql_db}}_ddl.sql "
+  tags:
+    - create-jobs
+
+- name: Create writer database
+  shell:  "mysql -h{{writer_mysql_host}} -u{{writer_mysql_user}} -p{{writer_mysql_pass}} -P{{writer_mysql_port}} -e  'CREATE DATABASE IF NOT EXISTS {{writer_mysql_db}} DEFAULT CHARSET utf8mb4;'"
+  tags:
+    - create-jobs
+
+- name: Create writer database struct
+  shell:  "mysql -h{{writer_mysql_host}} -u{{writer_mysql_user}} -p{{writer_mysql_pass}} -P{{writer_mysql_port}}  -D{{writer_mysql_db}} < {{scripts_with_source_dir}}/{{reader_mysql_db}}_ddl.sql"
+  tags:
+    - create-jobs
+
+- name: Register tables of database
+  community.mysql.mysql_query:
+    login_user: "{{writer_mysql_user}}"
+    login_db: "{{writer_mysql_db}}"
+    login_host: "{{writer_mysql_host}}"
+    login_password: "{{writer_mysql_pass}}"
+    login_port: "{{writer_mysql_port}}"
+    query: "{{default_table_register_sql if table_register_sql is not defined else table_register_sql}}"
+  register: table_query_results
+  tags:
+    - create-jobs
+    - run-datax
+

@@ -1,0 +1,18 @@
+- name: get sync tasks
+  debug:
+    msg: "{{table_query_results.query_result[0] | map(attribute='TABLE_NAME')}}"
+  register: task_result
+  tags:
+    - run-datax
+
+- name: generate datax script
+  template:
+    dest: "{{scripts_dir}}/datax-run.sh"
+    src: datax-run.sh.j2
+  tags:
+    - run-datax
+
+- name: execute datax async
+  shell: bash {{scripts_dir}}/datax-run.sh
+  tags:
+    - run-datax

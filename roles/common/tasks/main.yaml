@@ -1,0 +1,38 @@
+- name: Create jobs dir for datax-job-runner
+  file:
+    path: "{{jobs_with_source_dir}}"
+    state: directory
+  tags:
+    - create-jobs
+
+- name: Create job scripts dir for datax-job-runner
+  file:
+    path: "{{scripts_with_source_dir}}"
+    state: directory
+  tags:
+    - create-jobs
+
+- name: Create reader dir for datax-job-runner
+  file:
+    path: "{{reader_with_source_dir}}"
+    state: directory
+  tags:
+    - create-jobs
+
+- name: Create writer dir for datax-job-runner
+  file:
+    path: "{{writer_with_source_dir}}"
+    state: directory
+  tags:
+    - create-jobs
+
+- name: Create logs dir for datax-job-runner
+  file:
+    path: "{{logs_with_source_dir}}"
+    state: directory
+  tags:
+    - create-jobs
+
+
+
+
